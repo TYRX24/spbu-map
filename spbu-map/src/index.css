@@ -1,0 +1,114 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0b0b0c;
+  --bg-elev: #141416;
+  --bg-elev-2: #1c1c1f;
+  --line: #242428;
+  --line-2: #2f2f34;
+  --fg: #f4f4f5;
+  --fg-muted: #a1a1aa;
+  --fg-dim: #71717a;
+  --accent: #f5a524;
+  --accent-soft: rgba(245,165,36,0.14);
+  --accent-ring: rgba(245,165,36,0.28);
+  --ok: #34d399;
+  --warn: #fb923c;
+  --err: #f87171;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-xs: 8px;
+  --shadow-1: 0 1px 0 rgba(255,255,255,0.04) inset, 0 12px 40px -12px rgba(0,0,0,0.6);
+  --shadow-2: 0 0 0 1px var(--line), 0 24px 48px -16px rgba(0,0,0,0.5);
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+}
+
+[data-theme="light"] {
+  --bg: #f6f5f1;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #fbfaf7;
+  --line: #e7e5df;
+  --line-2: #d4d2cc;
+  --fg: #18181b;
+  --fg-muted: #52525b;
+  --fg-dim: #8a8a93;
+  --accent: #c97a0c;
+  --accent-soft: rgba(201,122,12,0.10);
+  --accent-ring: rgba(201,122,12,0.22);
+  --shadow-1: 0 1px 0 rgba(255,255,255,0.6) inset, 0 12px 40px -20px rgba(24,24,27,0.18);
+  --shadow-2: 0 0 0 1px var(--line), 0 24px 48px -20px rgba(24,24,27,0.14);
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+button { font-family: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+input  { font-family: inherit; color: inherit; }
+::selection { background: var(--accent-soft); color: var(--fg); }
+
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "ss01","tnum";
+}
+
+.scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-2) transparent;
+}
+.scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.scroll::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 8px; }
+.scroll::-webkit-scrollbar-track { background: transparent; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pinDrop {
+  0%   { transform: translate(-50%, -120%) scale(0.7); opacity: 0; }
+  60%  { transform: translate(-50%, -95%) scale(1.08); opacity: 1; }
+  100% { transform: translate(-50%, -100%) scale(1); }
+}
+@keyframes pulse {
+  0%   { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.fade-in { animation: fadeInUp .28s ease both; }
+
+/* Leaflet overrides */
+.leaflet-container {
+  background: var(--bg) !important;
+  font-family: var(--font-sans) !important;
+}
+.leaflet-control-attribution {
+  background: var(--bg-elev) !important;
+  color: var(--fg-dim) !important;
+  border-top: 1px solid var(--line) !important;
+  font-size: 10px !important;
+}
+.leaflet-control-attribution a { color: var(--accent) !important; }
+.leaflet-bar {
+  border: 1px solid var(--line) !important;
+  box-shadow: var(--shadow-2) !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+.leaflet-bar a {
+  background: var(--bg-elev) !important;
+  color: var(--fg) !important;
+  border-bottom-color: var(--line) !important;
+  width: 40px !important;
+  height: 40px !important;
+  line-height: 40px !important;
+  font-size: 18px !important;
+}
+.leaflet-bar a:hover { background: var(--bg-elev-2) !important; }
+.leaflet-routing-container { display: none !important; }
