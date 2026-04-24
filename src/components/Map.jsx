@@ -151,7 +151,7 @@ export default function MapView({ stations, selectedId, hoveredId, onSelect, onH
     const accentColor = theme === 'dark' ? '#f5a524' : '#c97a0c';
     radiusCircleRef.current = L.circle([userLocation.lat, userLocation.lng], {
       radius: NEAR_RADIUS_M, color: accentColor, weight: 2, opacity: 0.7,
-      fillColor: accentColor, fillOpacity: 0.07, dashArray: '6 4',
+      fillColor: accentColor, fillOpacity: 0.07, Array: '6 4',
     }).addTo(mapRef.current);
     mapRef.current.fitBounds(radiusCircleRef.current.getBounds(), { padding: [40, 40], maxZoom: 14 });
   }, [userLocation, nearMeActive, theme]);
