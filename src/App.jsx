@@ -135,7 +135,7 @@ export default function App() {
         saved={saved} toggleSave={toggleSave}
       />
 
-      <main style={{ flex:1, position:'relative', overflow:'hidden' }}>
+      <main style={{ flex:1, position:'relative' }}>
         <MapView
           stations={filtered}
           selectedId={selectedId}
@@ -155,7 +155,7 @@ export default function App() {
           <div style={{
             position:'absolute', top:0, bottom:0,
             [tweaks.sidebarSide === 'left' ? 'left' : 'right']: 0,
-            width:400, zIndex:35,
+            width:400, zIndex:500,
           }}>
             <StationDetail
               station={selected}

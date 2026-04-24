@@ -169,7 +169,7 @@ export default function MapView({ stations, selectedId, hoveredId, onSelect, onH
   }, [route]);
 
   return (
-    <div style={{ position:'absolute', inset:0 }}>
+    <div style={{ position:'absolute', inset:0, overflow:'hidden' }}>
       <div ref={containerRef} style={{ width:'100%', height:'100%' }}/>
 
       {/* Top badge */}
