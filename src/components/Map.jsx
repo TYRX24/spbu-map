@@ -1,9 +1,9 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { BRANDS, I18N } from '../constants.js';
 
-// Map tile layers
+const NEAR_RADIUS_M = 3000;
 const TILE_LAYERS = {
   standard: {
     dark:  'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
@@ -56,7 +56,7 @@ function createMarkerIcon(brand, isActive, theme) {
   });
 }
 
-export default function MapView({ stations, selectedId, hoveredId, onSelect, onHover, mapStyle, theme, lang, userLocation, route }) {
+export default function MapView({ stations, selectedId, hoveredId, onSelect, onHover, mapStyle, theme, lang, userLocation, route, nearMeActive }) {
   const t = I18N[lang];
   const mapRef = useRef(null);
   const containerRef = useRef(null);
@@ -64,6 +64,7 @@ export default function MapView({ stations, selectedId, hoveredId, onSelect, onH
   const tileLayerRef = useRef(null);
   const routeLayerRef = useRef(null);
   const userMarkerRef = useRef(null);
+  const radiusCircleRef = useRef(null);
 
   // Init map
   useEffect(() => {
@@ -142,6 +143,18 @@ export default function MapView({ stations, selectedId, hoveredId, onSelect, onH
     userMarkerRef.current = L.marker([userLocation.lat, userLocation.lng], { icon, zIndexOffset: 1000 })
       .addTo(mapRef.current);
   }, [userLocation]);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+    if (radiusCircleRef.current) { radiusCircleRef.current.remove(); radiusCircleRef.current = null; }
+    if (!userLocation || !nearMeActive) return;
+    const accentColor = theme === 'dark' ? '#f5a524' : '#c97a0c';
+    radiusCircleRef.current = L.circle([userLocation.lat, userLocation.lng], {
+      radius: NEAR_RADIUS_M, color: accentColor, weight: 2, opacity: 0.7,
+      fillColor: accentColor, fillOpacity: 0.07, dashArray: '6 4',
+    }).addTo(mapRef.current);
+    mapRef.current.fitBounds(radiusCircleRef.current.getBounds(), { padding: [40, 40], maxZoom: 14 });
+  }, [userLocation, nearMeActive, theme]);
 
   // Route polyline
   useEffect(() => {

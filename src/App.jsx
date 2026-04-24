@@ -7,6 +7,7 @@ import Icon from './components/Icon.jsx';
 import { I18N, FUELS } from './constants.js';
 import { useRouting } from './hooks/useRouting.js';
 import rawStations from './data/spbu.json';
+import NearMeOverlay from './components/NearMeOverlay.jsx';
 
 const DEFAULTS = {
   theme: 'dark',
@@ -52,18 +53,23 @@ export default function App() {
   const [detailOpen, setDetailOpen] = useState(false);
   const [saved, setSaved] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
+  const [locating, setLocating] = useState(false);
+  const [nearMeActive, setNearMeActive] = useState(false);
 
   // Routing
   const { route, loading: routeLoading, error: routeError, fetchRoute, clearRoute } = useRouting();
 
   // Geolocation
-  useEffect(() => {
+  const requestLocation = useCallback(() => {
+    setLocating(true);
     navigator.geolocation?.getCurrentPosition(
-      pos => setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-      () => {},
+      pos => { setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }); setLocating(false); },
+      () => setLocating(false),
       { timeout: 8000 }
     );
   }, []);
+
+  useEffect(() => { requestLocation(); }, []);
 
   const toggleSave = id => setSaved(s => s.includes(id) ? s.filter(x => x !== id) : [...s, id]);
 
@@ -141,6 +147,7 @@ export default function App() {
           lang={tweaks.lang}
           userLocation={userLocation}
           route={route}
+          nearMeActive={nearMeActive}
         />
 
         {/* Detail panel */}
@@ -162,6 +169,19 @@ export default function App() {
             />
           </div>
         )}
+
+        <NearMeOverlay
+          stations={stations}
+          userLocation={userLocation}
+          onRequestLocation={requestLocation}
+          onSelectStation={id => { setSelectedId(id); setDetailOpen(true); }}
+          lang={tweaks.lang}
+          theme={tweaks.theme}
+          locating={locating}
+          active={nearMeActive}
+          onActivate={() => setNearMeActive(true)}
+          onDeactivate={() => setNearMeActive(false)}
+        />
 
         {/* Tweaks toggle button */}
         <button
