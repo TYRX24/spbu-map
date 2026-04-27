@@ -94,6 +94,24 @@ export default function StationDetail({ station, onClose, lang, side, isSaved, o
         </div>
       </div>
 
+      {/* Street View Photo */}
+      <div style={{ position:'relative', height:200, overflow:'hidden', borderBottom:'1px solid var(--line)' }}>
+        <img
+          src={`https://maps.googleapis.com/maps/api/streetview?size=600x200&location=${station.lat},${station.lng}&fov=90&key=AIzaSyDEQCZLyR_JBHM4umvBIjud3rA_XKww1Bg`}
+          alt={station.name}
+          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}
+          onError={e => { e.target.parentElement.style.display = 'none'; }}
+        />
+        <div style={{
+          position:'absolute', bottom:8, right:8,
+          padding:'3px 8px', borderRadius:6,
+          background:'rgba(0,0,0,0.55)', backdropFilter:'blur(6px)',
+          fontSize:10, color:'rgba(255,255,255,0.7)', fontFamily:'var(--font-mono)',
+        }}>
+          Google Street View
+        </div>
+      </div>
+
       {/* Actions */}
       <div style={{ padding:'14px 20px', display:'grid', gridTemplateColumns:'1fr auto auto', gap:8, borderBottom:'1px solid var(--line)' }}>
         <button
