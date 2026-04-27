@@ -105,7 +105,19 @@ export default function Sidebar({ stations, filtered, selectedId, hoveredId, onS
       {/* Header */}
       <div style={{ padding:'18px 20px 12px', borderBottom:'1px solid var(--line)' }}>
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:14 }}>
-          <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+
+            {/* Home button */}
+            <a href="/" title="Home" style={{
+              width:28, height:28, borderRadius:7,
+              background:'var(--bg)', border:'1px solid var(--line)',
+              display:'flex', alignItems:'center', justifyContent:'center',
+              color:'var(--fg-muted)', flexShrink:0,
+            }}>
+              <Icon name="home" size={14}/>
+            </a>
+
+            {/* Logo */}
             <div style={{ width:28, height:28, borderRadius:7, background:'var(--accent)', display:'flex', alignItems:'center', justifyContent:'center', color:'#0b0b0c' }}>
               <Icon name="fuel" size={18} stroke={2.2}/>
             </div>
