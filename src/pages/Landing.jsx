@@ -29,6 +29,10 @@ export default function Landing() {
   const APP = '/map';
   const isId = lang === 'id';
 
+  const scrollTo = (id) => {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
   return (
     <div style={{ fontFamily: "'Geist', -apple-system, system-ui, sans-serif", background: '#0d0d0f', color: '#f4f4f5', minHeight: '100vh' }}>
       <style>{`
@@ -68,9 +72,9 @@ export default function Landing() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
-          <a href="#" className="lp-nav-link">Home</a>
-          <a href="#features" className="lp-nav-link">{isId ? 'Fitur' : 'Features'}</a>
-          <a href="#preview"  className="lp-nav-link">Preview</a>
+            <span onClick={() => scrollTo('hero')}    className="lp-nav-link" style={{ cursor:'pointer' }}>Home</span>
+            <span onClick={() => scrollTo('features')} className="lp-nav-link" style={{ cursor:'pointer' }}>{isId ? 'Fitur' : 'Features'}</span>
+            <span onClick={() => scrollTo('preview')}  className="lp-nav-link" style={{ cursor:'pointer' }}>Preview</span>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
