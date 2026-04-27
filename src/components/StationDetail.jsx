@@ -126,7 +126,7 @@ export default function StationDetail({ station, onClose, lang, side, isSaved, o
           {t.directions}
         </button>
         <IconBtn icon="share" label={t.share} onClick={() => {
-          const url = `https://spbu-map.vercel.app/map`;
+          const url = `https://www.google.com/maps?q=${station.lat},${station.lng}`;
           const text = `${station.name} — ${station.address}`;
           if (navigator.share) {
             navigator.share({ title: station.name, text, url });
