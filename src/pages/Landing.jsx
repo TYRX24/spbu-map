@@ -68,7 +68,7 @@ export default function Landing() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
-            <a href="#" className="lp-nav-link">Home</a>
+          <a href="#" className="lp-nav-link">Home</a>
           <a href="#features" className="lp-nav-link">{isId ? 'Fitur' : 'Features'}</a>
           <a href="#preview"  className="lp-nav-link">Preview</a>
         </div>
