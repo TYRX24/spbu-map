@@ -126,7 +126,15 @@ export default function StationDetail({ station, onClose, lang, side, isSaved, o
           {t.directions}
         </button>
         <IconBtn icon="share" label={t.share} onClick={() => {
-          if (navigator.share) navigator.share({ title: station.name, text: station.address, url: `https://www.openstreetmap.org/node/${station.osm_id}` });
+          const url = `https://spbu-map.vercel.app/map`;
+          const text = `${station.name} — ${station.address}`;
+          if (navigator.share) {
+            navigator.share({ title: station.name, text, url });
+          } else {
+            navigator.clipboard.writeText(`${text}\n${url}`)
+              .then(() => alert('Link berhasil disalin!'))
+              .catch(() => alert('Gagal menyalin link.'));
+          }
         }}/>
         <IconBtn icon={isSaved ? 'heart-fill' : 'heart'} label={isSaved ? t.saved : t.save} onClick={onToggleSave} active={isSaved}/>
       </div>
