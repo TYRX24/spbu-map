@@ -118,6 +118,7 @@ export default function App() {
       display:'flex',
       flexDirection: tweaks.sidebarSide === 'right' ? 'row-reverse' : 'row',
       height:'100%', width:'100%', background:'var(--bg)',
+      overflow: 'hidden',
     }}>
       <Sidebar
         stations={stations}
