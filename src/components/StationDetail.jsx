@@ -97,7 +97,7 @@ export default function StationDetail({ station, onClose, lang, side, isSaved, o
       {/* Street View Photo */}
       <div style={{ position:'relative', height:200, overflow:'hidden', borderBottom:'1px solid var(--line)' }}>
         <img
-          src={`https://maps.googleapis.com/maps/api/streetview?size=600x200&location=${station.lat},${station.lng}&fov=90&key=AIzaSyDEQCZLyR_JBHM4umvBIjud3rA_XKww1Bg`}
+          src={`https://maps.googleapis.com/maps/api/streetview?size=600x200&location=${station.lat},${station.lng}&fov=90&key=${import.meta.env.VITE_GOOGLE_MAPS_KEY}`}
           alt={station.name}
           style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}
           onError={e => { e.target.parentElement.style.display = 'none'; }}
