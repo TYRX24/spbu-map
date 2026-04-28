@@ -19,6 +19,8 @@ const FEATURES = [
 export default function Landing() {
   const [lang, setLang] = useState('id');
   const [scrolled, setScrolled] = useState(false);
+  const [theme, setTheme] = useState('dark');
+  const isDark = theme === 'dark';
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
@@ -26,15 +28,32 @@ export default function Landing() {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
+  useEffect(() => {
+    document.body.style.background = isDark ? '#0d0d0f' : '#f4f4f0';
+    document.body.style.color = isDark ? '#f4f4f5' : '#18181b';
+  }, [theme]);
+
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   const APP = '/map';
   const isId = lang === 'id';
 
-  const scrollTo = (id) => {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    };
+  const c = {
+    bg:       isDark ? '#0d0d0f' : '#f4f4f0',
+    bgElev:   isDark ? '#0f0f11' : '#ffffff',
+    bgElev2:  isDark ? '#141416' : '#f0f0ec',
+    border:   isDark ? '#1a1a1e' : '#e0e0dc',
+    border2:  isDark ? '#2a2a2e' : '#d0d0cc',
+    fg:       isDark ? '#f4f4f5' : '#18181b',
+    fgMuted:  isDark ? '#a1a1aa' : '#52525b',
+    fgDim:    isDark ? '#71717a' : '#71717a',
+    navBg:    isDark ? 'rgba(13,13,15,0.92)' : 'rgba(244,244,240,0.92)',
+  };
 
   return (
-    <div style={{ fontFamily: "'Geist', -apple-system, system-ui, sans-serif", background: '#0d0d0f', color: '#f4f4f5', minHeight: '100vh' }}>
+    <div style={{ fontFamily: "'Geist', -apple-system, system-ui, sans-serif", background: c.bg, color: c.fg, minHeight: '100vh', transition: 'background 0.3s, color 0.3s' }}>
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
@@ -43,12 +62,7 @@ export default function Landing() {
         .lp-btn { display:inline-flex; align-items:center; gap:8px; padding:12px 24px; border-radius:10px; font-size:14px; font-weight:600; font-family:inherit; cursor:pointer; border:none; transition:all 0.2s; }
         .lp-btn-primary { background:#f5a524; color:#0d0d0f; }
         .lp-btn-primary:hover { background:#f5b84a; transform:translateY(-1px); }
-        .lp-btn-ghost { background:transparent; color:#f4f4f5; border:1px solid #2a2a2e; }
-        .lp-btn-ghost:hover { background:#141416; }
-        .lp-nav-link { font-size:14px; color:#71717a; font-weight:500; transition:color 0.2s; }
-        .lp-nav-link:hover { color:#f4f4f5; }
-        .lp-card { background:#0f0f11; border:1px solid #1a1a1e; border-radius:14px; padding:24px; transition:border-color 0.2s; }
-        .lp-card:hover { border-color:#2a2a2e; }
+        .lp-nav-link { font-size:14px; font-weight:500; transition:color 0.2s; cursor:pointer; background:none; border:none; font-family:inherit; }
       `}</style>
 
       {/* NAVBAR */}
@@ -56,39 +70,63 @@ export default function Landing() {
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         height: 60, padding: '0 40px',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        background: scrolled ? 'rgba(13,13,15,0.92)' : 'transparent',
+        background: scrolled ? c.navBg : 'transparent',
         backdropFilter: scrolled ? 'blur(16px)' : 'none',
-        borderBottom: scrolled ? '1px solid #1a1a1e' : '1px solid transparent',
+        borderBottom: scrolled ? `1px solid ${c.border}` : '1px solid transparent',
         transition: 'all 0.3s',
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 32, height: 32, borderRadius: 8, background: '#f5a524', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {/* Logo */}
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ width: 32, height: 32, borderRadius: 8, background: '#f5a524', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <span style={{ fontSize: 16 }}>⛽</span>
           </div>
           <div>
-            <div style={{ fontSize: 13, fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1 }}>SPBU</div>
-            <div style={{ fontSize: 9, color: '#52525b', fontFamily: 'monospace', letterSpacing: '0.1em' }}>JAWA BARAT</div>
+            <div style={{ fontSize: 13, fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1, color: c.fg }}>SPBU</div>
+            <div style={{ fontSize: 9, color: c.fgDim, fontFamily: 'monospace', letterSpacing: '0.1em' }}>JAWA BARAT</div>
           </div>
-        </div>
+        </a>
 
+        {/* Nav links */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
-            <span onClick={() => scrollTo('hero')}    className="lp-nav-link" style={{ cursor:'pointer' }}>Home</span>
-            <span onClick={() => scrollTo('features')} className="lp-nav-link" style={{ cursor:'pointer' }}>{isId ? 'Fitur' : 'Features'}</span>
-            <span onClick={() => scrollTo('preview')}  className="lp-nav-link" style={{ cursor:'pointer' }}>Preview</span>
+          {[
+            { label: 'Home',                            id: 'hero'     },
+            { label: isId ? 'Fitur' : 'Features',       id: 'features' },
+            { label: 'Preview',                          id: 'preview'  },
+          ].map(n => (
+            <button key={n.id} onClick={() => scrollTo(n.id)} className="lp-nav-link"
+              style={{ color: c.fgDim }}
+              onMouseEnter={e => e.currentTarget.style.color = c.fg}
+              onMouseLeave={e => e.currentTarget.style.color = c.fgDim}
+            >{n.label}</button>
+          ))}
         </div>
 
+        {/* Right side */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ display: 'flex', gap: 2, padding: 3, background: '#0f0f11', borderRadius: 7, border: '1px solid #1a1a1e' }}>
+          {/* Theme toggle */}
+          <button onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} style={{
+            width: 32, height: 32, borderRadius: 8,
+            border: `1px solid ${c.border2}`,
+            background: c.bgElev, color: c.fg,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', fontSize: 15,
+          }}>
+            {isDark ? '☀️' : '🌙'}
+          </button>
+
+          {/* Lang toggle */}
+          <div style={{ display: 'flex', gap: 2, padding: 3, background: c.bgElev, borderRadius: 7, border: `1px solid ${c.border}` }}>
             {['id', 'en'].map(L => (
               <button key={L} onClick={() => setLang(L)} style={{
                 padding: '3px 9px', fontSize: 10, fontWeight: 700, borderRadius: 5,
                 border: 'none', cursor: 'pointer', fontFamily: 'monospace',
                 textTransform: 'uppercase', letterSpacing: '0.06em', transition: 'all 0.15s',
-                background: lang === L ? '#1a1a1e' : 'transparent',
-                color: lang === L ? '#f4f4f5' : '#52525b',
+                background: lang === L ? c.bgElev2 : 'transparent',
+                color: lang === L ? c.fg : c.fgDim,
               }}>{L}</button>
             ))}
           </div>
+
           <a href={APP} className="lp-btn lp-btn-primary" style={{ padding: '7px 16px', fontSize: 13 }}>
             {isId ? 'Buka Aplikasi' : 'Open App'} →
           </a>
@@ -96,14 +134,14 @@ export default function Landing() {
       </nav>
 
       {/* HERO */}
-      <section style={{
+      <section id="hero" style={{
         minHeight: '100vh', display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
         padding: '120px 40px 80px', textAlign: 'center', position: 'relative', overflow: 'hidden',
       }}>
         <div style={{
           position: 'absolute', inset: 0, zIndex: 0,
-          backgroundImage: 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)',
+          backgroundImage: `linear-gradient(${isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.04)'} 1px, transparent 1px), linear-gradient(90deg, ${isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.04)'} 1px, transparent 1px)`,
           backgroundSize: '48px 48px',
         }}/>
         <div style={{
@@ -125,13 +163,13 @@ export default function Landing() {
             </span>
           </div>
 
-          <h1 style={{ fontSize: 'clamp(44px, 7vw, 80px)', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 0.95, marginBottom: 24 }}>
+          <h1 style={{ fontSize: 'clamp(44px, 7vw, 80px)', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 0.95, marginBottom: 24, color: c.fg }}>
             <span style={{ display: 'block' }}>{isId ? 'Temukan SPBU' : 'Find the Nearest'}</span>
             <span style={{ display: 'block' }}>{isId ? 'Terdekat di' : 'Gas Station in'}</span>
             <span style={{ display: 'block', color: '#f5a524' }}>{isId ? 'Jawa Barat' : 'West Java'}</span>
           </h1>
 
-          <p style={{ fontSize: 17, color: '#71717a', lineHeight: 1.7, maxWidth: 520, margin: '0 auto 36px' }}>
+          <p style={{ fontSize: 17, color: c.fgDim, lineHeight: 1.7, maxWidth: 520, margin: '0 auto 36px' }}>
             {isId
               ? 'Peta interaktif 447 SPBU Jawa Barat — lengkap dengan harga BBM, fasilitas, dan petunjuk arah.'
               : 'Interactive map of 447 gas stations in West Java — with fuel prices, amenities, and directions.'}
@@ -141,9 +179,12 @@ export default function Landing() {
             <a href={APP} className="lp-btn lp-btn-primary">
               📍 {isId ? 'Buka Peta' : 'Open Map'}
             </a>
-            <a href="#features" className="lp-btn lp-btn-ghost">
+            <button onClick={() => scrollTo('features')} className="lp-btn" style={{
+              background: 'transparent', color: c.fg,
+              border: `1px solid ${c.border2}`,
+            }}>
               {isId ? 'Lihat Fitur' : 'See Features'}
-            </a>
+            </button>
           </div>
 
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginTop: 48 }}>
@@ -156,7 +197,7 @@ export default function Landing() {
                 <div style={{ width: 20, height: 20, borderRadius: 5, background: b.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <span style={{ fontSize: 8, fontWeight: 800, color: '#fff', fontFamily: 'monospace' }}>{b.short}</span>
                 </div>
-                <span style={{ fontSize: 12, color: '#a1a1aa', fontWeight: 500 }}>{b.name}</span>
+                <span style={{ fontSize: 12, color: c.fgMuted, fontWeight: 500 }}>{b.name}</span>
                 <span style={{ fontSize: 11, color: b.color, fontWeight: 700, fontFamily: 'monospace' }}>{b.count}</span>
               </div>
             ))}
@@ -170,16 +211,23 @@ export default function Landing() {
           <p style={{ fontSize: 11, fontWeight: 700, color: '#f5a524', letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
             {isId ? 'Fitur' : 'Features'}
           </p>
-          <h2 style={{ fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 800, letterSpacing: '-0.03em' }}>
+          <h2 style={{ fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 800, letterSpacing: '-0.03em', color: c.fg }}>
             {isId ? 'Semua yang Kamu Butuhkan' : 'Everything You Need'}
           </h2>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
           {FEATURES.map((f, i) => (
-            <div key={i} className="lp-card">
+            <div key={i} style={{
+              padding: 24, borderRadius: 14,
+              background: c.bgElev, border: `1px solid ${c.border}`,
+              transition: 'border-color 0.2s, transform 0.2s',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = c.border2; e.currentTarget.style.transform = 'translateY(-3px)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = c.border; e.currentTarget.style.transform = 'translateY(0)'; }}
+            >
               <div style={{ fontSize: 26, marginBottom: 14 }}>{f.icon}</div>
-              <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 8, letterSpacing: '-0.01em' }}>{isId ? f.id : f.en}</h3>
-              <p style={{ fontSize: 13, color: '#71717a', lineHeight: 1.65 }}>{isId ? f.desc_id : f.desc_en}</p>
+              <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 8, letterSpacing: '-0.01em', color: c.fg }}>{isId ? f.id : f.en}</h3>
+              <p style={{ fontSize: 13, color: c.fgDim, lineHeight: 1.65 }}>{isId ? f.desc_id : f.desc_en}</p>
             </div>
           ))}
         </div>
@@ -189,16 +237,16 @@ export default function Landing() {
       <section id="preview" style={{ padding: '80px 40px', maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 40 }}>
           <p style={{ fontSize: 11, fontWeight: 700, color: '#f5a524', letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>Preview</p>
-          <h2 style={{ fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 800, letterSpacing: '-0.03em' }}>
+          <h2 style={{ fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 800, letterSpacing: '-0.03em', color: c.fg }}>
             {isId ? 'Lihat Aplikasinya' : 'See It in Action'}
           </h2>
         </div>
-        <div style={{ borderRadius: 16, overflow: 'hidden', border: '1px solid #1a1a1e', boxShadow: '0 32px 64px -16px rgba(0,0,0,0.7)' }}>
-          <div style={{ background: '#0f0f11', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 8, borderBottom: '1px solid #1a1a1e' }}>
+        <div style={{ borderRadius: 16, overflow: 'hidden', border: `1px solid ${c.border}`, boxShadow: isDark ? '0 32px 64px -16px rgba(0,0,0,0.7)' : '0 32px 64px -16px rgba(0,0,0,0.15)' }}>
+          <div style={{ background: c.bgElev, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 8, borderBottom: `1px solid ${c.border}` }}>
             <div style={{ display: 'flex', gap: 5 }}>
-              {['#ff5f56','#ffbd2e','#27c93f'].map(c => <div key={c} style={{ width: 10, height: 10, borderRadius: '50%', background: c }}/>)}
+              {['#ff5f56','#ffbd2e','#27c93f'].map(col => <div key={col} style={{ width: 10, height: 10, borderRadius: '50%', background: col }}/>)}
             </div>
-            <div style={{ flex: 1, background: '#0d0d0f', borderRadius: 5, padding: '4px 10px', fontSize: 11, color: '#52525b', fontFamily: 'monospace' }}>
+            <div style={{ flex: 1, background: c.bg, borderRadius: 5, padding: '4px 10px', fontSize: 11, color: c.fgDim, fontFamily: 'monospace' }}>
               spbu-map.vercel.app
             </div>
           </div>
@@ -212,12 +260,12 @@ export default function Landing() {
       </section>
 
       {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid #1a1a1e', padding: '28px 40px', marginTop: 40 }}>
+      <footer style={{ borderTop: `1px solid ${c.border}`, padding: '28px 40px', marginTop: 40 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-          <div style={{ fontSize: 12, color: '#52525b' }}>
+          <div style={{ fontSize: 12, color: c.fgDim }}>
             {isId ? 'Tugas Besar TPBW · Teknik Komputer · Telkom University' : 'TPBW Final Project · Computer Engineering · Telkom University'}
           </div>
-          <div style={{ fontSize: 12, color: '#52525b', display: 'flex', gap: 12, alignItems: 'center' }}>
+          <div style={{ fontSize: 12, color: c.fgDim, display: 'flex', gap: 12, alignItems: 'center' }}>
             <span>React + Leaflet</span>
             <span>·</span>
             <span>OpenStreetMap</span>
