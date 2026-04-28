@@ -3,7 +3,6 @@ import Icon from './Icon.jsx';
 import { BrandChip } from './Icon.jsx';
 import { BRANDS, FUELS, I18N } from '../constants.js';
 
-
 function QueueBars({ level }) {
   const count = level === 'low' ? 1 : level === 'medium' ? 2 : 3;
   const color = { low:'#34d399', medium:'#fb923c', high:'#f87171' }[level] || '#34d399';
@@ -106,19 +105,7 @@ export default function Sidebar({ stations, filtered, selectedId, hoveredId, onS
       {/* Header */}
       <div style={{ padding:'18px 20px 12px', borderBottom:'1px solid var(--line)' }}>
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:14 }}>
-          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-
-            {/* Home button */}
-            <a href="/" title="Home" style={{
-              width:28, height:28, borderRadius:7,
-              background:'var(--bg)', border:'1px solid var(--line)',
-              display:'flex', alignItems:'center', justifyContent:'center',
-              color:'var(--fg-muted)', flexShrink:0,
-            }}>
-              <Icon name="home" size={14}/>
-            </a>
-
-            {/* Logo */}
+          <div style={{ display:'flex', alignItems:'center', gap:10 }}>
             <div style={{ width:28, height:28, borderRadius:7, background:'var(--accent)', display:'flex', alignItems:'center', justifyContent:'center', color:'#0b0b0c' }}>
               <Icon name="fuel" size={18} stroke={2.2}/>
             </div>
@@ -127,44 +114,31 @@ export default function Sidebar({ stations, filtered, selectedId, hoveredId, onS
               <div style={{ fontSize:11, color:'var(--fg-dim)', fontFamily:'var(--font-mono)' }}>{t.west_java.toUpperCase()}</div>
             </div>
           </div>
-          {/* Theme toggle */}
-            <button
-              onClick={onToggleTheme}
-              title="Toggle theme"
-              style={{
-                width:32, height:32, borderRadius:7,
-                background:'var(--bg)', border:'1px solid var(--line)',
-                display:'flex', alignItems:'center', justifyContent:'center',
-                cursor:'pointer', fontSize:15,
-              }}
-            >
+          <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+            {/* Theme toggle */}
+            <button onClick={onToggleTheme} style={{
+              width:32, height:32, borderRadius:7,
+              background:'var(--bg)', border:'1px solid var(--line)',
+              display:'flex', alignItems:'center', justifyContent:'center',
+              cursor:'pointer', fontSize:15,
+            }}>
               {currentTheme === 'dark' ? '☀️' : '🌙'}
             </button>
-        <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-          {/* Theme toggle */}
-          <button onClick={onToggleTheme} style={{
-            width:32, height:32, borderRadius:7,
-            background:'var(--bg)', border:'1px solid var(--line)',
-            display:'flex', alignItems:'center', justifyContent:'center',
-            cursor:'pointer', fontSize:15,
-          }}>
-            {currentTheme === 'dark' ? '☀️' : '🌙'}
-          </button>
 
-          {/* Lang toggle */}
-          <div style={{ display:'flex', gap:2, padding:2, background:'var(--bg)', borderRadius:7, border:'1px solid var(--line)' }}>
-            {['id','en'].map(L => (
-              <button key={L} onClick={() => setLang(L)} style={{
-                padding:'4px 9px', fontSize:11, fontWeight:600, borderRadius:5,
-                background: lang===L ? 'var(--bg-elev)' : 'transparent',
-                color: lang===L ? 'var(--fg)' : 'var(--fg-dim)',
-                boxShadow: lang===L ? '0 0 0 1px var(--line)' : 'none',
-                textTransform:'uppercase', letterSpacing:'0.05em', fontFamily:'var(--font-mono)',
-              }}>{L}</button>
-            ))}
+            {/* Lang toggle */}
+            <div style={{ display:'flex', gap:2, padding:2, background:'var(--bg)', borderRadius:7, border:'1px solid var(--line)' }}>
+              {['id','en'].map(L => (
+                <button key={L} onClick={() => setLang(L)} style={{
+                  padding:'4px 9px', fontSize:11, fontWeight:600, borderRadius:5,
+                  background: lang===L ? 'var(--bg-elev)' : 'transparent',
+                  color: lang===L ? 'var(--fg)' : 'var(--fg-dim)',
+                  boxShadow: lang===L ? '0 0 0 1px var(--line)' : 'none',
+                  textTransform:'uppercase', letterSpacing:'0.05em', fontFamily:'var(--font-mono)',
+                }}>{L}</button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
         {/* Search */}
         <div style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 12px', background:'var(--bg)', border:'1px solid var(--line)', borderRadius:10 }}>
