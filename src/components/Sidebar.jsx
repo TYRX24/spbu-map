@@ -3,6 +3,7 @@ import Icon from './Icon.jsx';
 import { BrandChip } from './Icon.jsx';
 import { BRANDS, FUELS, I18N } from '../constants.js';
 
+
 function QueueBars({ level }) {
   const count = level === 'low' ? 1 : level === 'medium' ? 2 : 3;
   const color = { low:'#34d399', medium:'#fb923c', high:'#f87171' }[level] || '#34d399';
@@ -78,7 +79,7 @@ function StationRow({ station, isSelected, isHovered, onSelect, onHover, lang, i
   );
 }
 
-export default function Sidebar({ stations, filtered, selectedId, hoveredId, onSelect, onHover, query, setQuery, filters, setFilters, sort, setSort, lang, setLang, onOpenDetail, side, saved, toggleSave }) {
+export default function Sidebar({ stations, filtered, selectedId, hoveredId, onSelect, onHover, query, setQuery, filters, setFilters, sort, setSort, lang, setLang, onOpenDetail, side, saved, toggleSave, currentTheme, onToggleTheme }) {
   const t = I18N[lang];
   const [showFilters, setShowFilters] = useState(false);
 
