@@ -140,6 +140,18 @@ export default function Sidebar({ stations, filtered, selectedId, hoveredId, onS
             >
               {currentTheme === 'dark' ? '☀️' : '🌙'}
             </button>
+        <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+          {/* Theme toggle */}
+          <button onClick={onToggleTheme} style={{
+            width:32, height:32, borderRadius:7,
+            background:'var(--bg)', border:'1px solid var(--line)',
+            display:'flex', alignItems:'center', justifyContent:'center',
+            cursor:'pointer', fontSize:15,
+          }}>
+            {currentTheme === 'dark' ? '☀️' : '🌙'}
+          </button>
+
+          {/* Lang toggle */}
           <div style={{ display:'flex', gap:2, padding:2, background:'var(--bg)', borderRadius:7, border:'1px solid var(--line)' }}>
             {['id','en'].map(L => (
               <button key={L} onClick={() => setLang(L)} style={{
@@ -152,6 +164,7 @@ export default function Sidebar({ stations, filtered, selectedId, hoveredId, onS
             ))}
           </div>
         </div>
+      </div>
 
         {/* Search */}
         <div style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 12px', background:'var(--bg)', border:'1px solid var(--line)', borderRadius:10 }}>
