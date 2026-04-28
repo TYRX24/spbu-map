@@ -126,6 +126,19 @@ export default function Sidebar({ stations, filtered, selectedId, hoveredId, onS
               <div style={{ fontSize:11, color:'var(--fg-dim)', fontFamily:'var(--font-mono)' }}>{t.west_java.toUpperCase()}</div>
             </div>
           </div>
+          {/* Theme toggle */}
+            <button
+              onClick={onToggleTheme}
+              title="Toggle theme"
+              style={{
+                width:32, height:32, borderRadius:7,
+                background:'var(--bg)', border:'1px solid var(--line)',
+                display:'flex', alignItems:'center', justifyContent:'center',
+                cursor:'pointer', fontSize:15,
+              }}
+            >
+              {currentTheme === 'dark' ? '☀️' : '🌙'}
+            </button>
           <div style={{ display:'flex', gap:2, padding:2, background:'var(--bg)', borderRadius:7, border:'1px solid var(--line)' }}>
             {['id','en'].map(L => (
               <button key={L} onClick={() => setLang(L)} style={{

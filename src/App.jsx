@@ -134,6 +134,8 @@ export default function App() {
         onOpenDetail={() => setDetailOpen(true)}
         side={tweaks.sidebarSide}
         saved={saved} toggleSave={toggleSave}
+        currentTheme={tweaks.theme}
+        onToggleTheme={() => setTweaks({ theme: tweaks.theme === 'dark' ? 'light' : 'dark' })}
       />
 
       <main style={{ flex:1, position:'relative' }}>
